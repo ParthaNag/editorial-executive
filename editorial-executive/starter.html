@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Title — change me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS — light mode default, dark mode via [data-theme="dark"]
+     ============================================================ */
+  :root {
+    --bg:          #faf9f6;
+    --surface:     #ffffff;
+    --ink:         #0a1628;
+    --ink-soft:    #4a5568;
+    --line:        #e2e0d8;
+    --accent:      #b8341a;
+    --accent-soft: #f4ddd5;
+    --positive:    #1b5e20;
+    --negative:    #b8341a;
+    --muted:       #8a8578;
+    --gold:        #b08d3a;
+  }
+  [data-theme="dark"] {
+    --bg:          #0e1116;
+    --surface:     #181c23;
+    --ink:         #f0ede4;
+    --ink-soft:    #b0aea6;
+    --line:        #2a2e36;
+    --accent:      #e85a3c;
+    --accent-soft: #3a1d15;
+    --positive:    #6dd474;
+    --negative:    #e85a3c;
+    --muted:       #6f6c63;
+    --gold:        #d4a85a;
+  }
+
+  /* ============================================================ */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Geist", -apple-system, sans-serif;
+    font-size: 14px; line-height: 1.6;
+    transition: background .3s, color .3s;
+  }
+  .container { max-width: 1240px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* HEADER */
+  .header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 48px;
+  }
+  .brand-mark {
+    font-family: "Fraunces", serif; font-weight: 600; font-size: 13px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 44px;
+    letter-spacing: -0.02em; line-height: 1.1; margin-top: 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { color: var(--ink-soft); font-size: 14px; margin-top: 12px; max-width: 620px; }
+  .toggle-btn {
+    background: transparent; border: 1px solid var(--line); color: var(--ink);
+    padding: 8px 14px; font-size: 12px; cursor: pointer;
+    font-family: "Geist", sans-serif; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .toggle-btn:hover { background: var(--surface); }
+
+  /* SECTION */
+  .section { margin-bottom: 56px; }
+  .section-label {
+    font-family: "Fraunces", serif; font-weight: 600; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 28px;
+    letter-spacing: -0.01em; margin-bottom: 24px;
+    border-bottom: 1px solid var(--line); padding-bottom: 12px;
+  }
+  h3 {
+    font-family: "Fraunces", serif; font-weight: 500; font-size: 20px;
+    margin-bottom: 16px; color: var(--ink);
+  }
+
+  /* SURFACE — the only container component */
+  .surface {
+    background: var(--surface); border: 1px solid var(--line); padding: 24px;
+  }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  .kpi { background: var(--surface); padding: 24px 20px; }
+  .kpi-label {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .kpi-value {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 32px;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .kpi-sub { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+  .pos { color: var(--positive); }
+  .neg { color: var(--negative); }
+
+  /* TABS */
+  .tabs { display: flex; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+  .tab {
+    background: none; border: none; cursor: pointer;
+    padding: 14px 24px; font-family: "Geist", sans-serif;
+    font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--ink-soft); border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 12px 16px;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500;
+    border-bottom: 1px solid var(--line);
+  }
+  th.num, td.num { text-align: right; font-family: "JetBrains Mono", monospace; }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    padding: 18px 24px; font-size: 13px; line-height: 1.7;
+  }
+  .callout strong { color: var(--accent); }
+
+  /* CHIPS */
+  .chip {
+    background: transparent; border: 1px solid var(--line); color: var(--ink-soft);
+    padding: 6px 14px; font-size: 11px; cursor: pointer;
+    font-family: "Geist", sans-serif; letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* TWO-COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 80px; padding-top: 32px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 11px; text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  /* RESPONSIVE — single breakpoint */
+  @media (max-width: 880px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col  { grid-template-columns: 1fr; }
+    h1        { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============================================================
+       HEADER — change brand-mark, h1, subtitle
+       ============================================================ -->
+  <header class="header">
+    <div>
+      <div class="brand-mark">Project Category</div>
+      <h1>Project Title<br><em>Italic subtitle</em></h1>
+      <p class="subtitle">A one-line summary describing the document's purpose.</p>
+    </div>
+    <button class="toggle-btn" onclick="toggleTheme()">◐ Theme</button>
+  </header>
+
+  <!-- ============================================================
+       SECTION 1 — Overview with KPI grid
+       ============================================================ -->
+  <section class="section">
+    <div class="section-label">01 / Overview</div>
+    <h2>Headline metrics</h2>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Metric One</div>
+        <div class="kpi-value">42.0%</div>
+        <div class="kpi-sub">Description</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Metric Two</div>
+        <div class="kpi-value pos">+12.4%</div>
+        <div class="kpi-sub">vs baseline</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Metric Three</div>
+        <div class="kpi-value">1.85</div>
+        <div class="kpi-sub">ratio</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Metric Four</div>
+        <div class="kpi-value neg">-3.2%</div>
+        <div class="kpi-sub">drawdown</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — Detail with surface containing prose + table
+       ============================================================ -->
+  <section class="section">
+    <div class="section-label">02 / Detail</div>
+    <h2>Section heading</h2>
+
+    <div class="surface" style="margin-bottom: 24px;">
+      <h3>Subsection title</h3>
+      <p style="margin-bottom: 14px;">
+        Body copy in Geist, 14px, line-height 1.6. Mix in <strong>strong emphasis</strong>
+        sparingly. Paragraphs do the heavy lifting in this design system — avoid bullet
+        lists for prose. Lists are reserved for genuinely enumerable data.
+      </p>
+      <p>
+        For a key phrase that needs visual weight, italicize with <em>em tags</em>
+        — italics on Fraunces are genuinely beautiful and quietly authoritative.
+      </p>
+    </div>
+
+    <div class="surface">
+      <h3>Tabular data</h3>
+      <p style="font-size: 12px; color: var(--ink-soft); margin-bottom: 16px;">
+        Every numerical column gets <code>class="num"</code> on the th and td — applies
+        right-alignment and JetBrains Mono in one move.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="num">Count</th>
+            <th class="num">Value</th>
+            <th class="num">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>First item</td>
+            <td class="num">142</td>
+            <td class="num">3,450.20</td>
+            <td class="num pos">+2.1%</td>
+          </tr>
+          <tr>
+            <td>Second item</td>
+            <td class="num">98</td>
+            <td class="num">1,820.50</td>
+            <td class="num neg">-0.8%</td>
+          </tr>
+          <tr>
+            <td>Third item</td>
+            <td class="num">211</td>
+            <td class="num">5,120.00</td>
+            <td class="num pos">+4.7%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — Two-column comparison
+       ============================================================ -->
+  <section class="section">
+    <div class="section-label">03 / Comparison</div>
+    <h2>Side by side</h2>
+    <div class="two-col">
+      <div class="surface">
+        <h3>Variant A</h3>
+        <p>Use the two-col grid for paired data that should be read as direct comparison —
+           e.g. before/after, region A vs region B, strategy vs baseline.</p>
+      </div>
+      <div class="surface">
+        <h3>Variant B</h3>
+        <p>The grid stacks to a single column on screens narrower than 880px.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — Filter chips + tabs (interactive UI patterns)
+       ============================================================ -->
+  <section class="section">
+    <div class="section-label">04 / Interactive</div>
+    <h2>Filters and tabs</h2>
+
+    <div class="surface" style="margin-bottom: 24px;">
+      <h3>Chip filters</h3>
+      <p style="font-size: 12px; color: var(--ink-soft); margin-bottom: 16px;">
+        Active state inverts (ink background, canvas text). Hover tints to accent.
+      </p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="chip active">All</button>
+        <button class="chip">Winners</button>
+        <button class="chip">Losers</button>
+        <button class="chip">Last 30 days</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active">Tab one</button>
+      <button class="tab">Tab two</button>
+      <button class="tab">Tab three</button>
+    </div>
+    <div class="surface">
+      <p>Tab content goes here. The active tab's underline sits flush on the section
+         divider via <code>margin-bottom: -1px</code> — no double line, no gap.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 5 — Callout (use sparingly: 1-2x per page max)
+       ============================================================ -->
+  <section class="section">
+    <div class="callout">
+      <p>
+        <strong>Key insight.</strong> Use callouts once or twice per document for the
+        single most important takeaway. Overuse turns them into wallpaper. The left
+        accent border and tinted background reserve them for moments that genuinely
+        need to interrupt the reading flow.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Generated [date] · [source] · [disclaimer or attribution]
+  </footer>
+</div>
+
+<script>
+  function toggleTheme() {
+    const c = document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', c === 'dark' ? 'light' : 'dark');
+  }
+</script>
+</body>
+</html>

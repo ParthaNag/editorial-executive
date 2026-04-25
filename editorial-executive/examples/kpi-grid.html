@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Grid Variants — Editorial Executive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /*
+   * KPI GRID VARIANTS — for the Editorial Executive design system.
+   *
+   * Four patterns:
+   *   1. Standard 4-column: top-of-page headline metrics
+   *   2. 8-cell two-row: deeper diagnostics with secondary metrics
+   *   3. Scorecard with delta arrows: when YoY/QoQ change is the story
+   *   4. Compact mini-grid: 6-cell sidebar/dashboard summary (smaller type)
+   *
+   * The signature trick is `gap: 1px` with `background: var(--line)` on the parent
+   * container, producing continuous hairline gutters with no doubled borders.
+   */
+
+  :root {
+    --bg: #faf9f6; --surface: #fff; --ink: #0a1628; --ink-soft: #4a5568;
+    --line: #e2e0d8; --accent: #b8341a; --accent-soft: #f4ddd5;
+    --positive: #1b5e20; --negative: #b8341a; --muted: #8a8578; --gold: #b08d3a;
+  }
+  [data-theme="dark"] {
+    --bg: #0e1116; --surface: #181c23; --ink: #f0ede4; --ink-soft: #b0aea6;
+    --line: #2a2e36; --accent: #e85a3c; --accent-soft: #3a1d15;
+    --positive: #6dd474; --negative: #e85a3c; --muted: #6f6c63; --gold: #d4a85a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Geist", sans-serif; font-size: 14px; line-height: 1.6;
+    transition: background .3s, color .3s;
+  }
+  .container { max-width: 1240px; margin: 0 auto; padding: 48px 32px 80px; }
+  .demo-section { margin-bottom: 64px; }
+  .demo-label {
+    font-family: "Fraunces", serif; font-weight: 600; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .demo-title {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 24px;
+    letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .demo-desc { color: var(--ink-soft); font-size: 13px; margin-bottom: 24px; max-width: 720px; }
+  .toggle-btn {
+    background: transparent; border: 1px solid var(--line); color: var(--ink);
+    padding: 8px 14px; font-size: 12px; cursor: pointer; float: right;
+    font-family: "Geist", sans-serif; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+
+  /* ============================================================
+     SHARED KPI BASE
+     ============================================================ */
+  .kpi-grid {
+    display: grid; gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  .kpi { background: var(--surface); padding: 24px 20px; }
+  .kpi-label {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .kpi-value {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 32px;
+    letter-spacing: -0.02em; line-height: 1;
+  }
+  .kpi-sub { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+  .pos { color: var(--positive); }
+  .neg { color: var(--negative); }
+
+  /* ============================================================
+     VARIANT 1 — Standard 4-column
+     ============================================================ */
+  .kpi-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  /* ============================================================
+     VARIANT 2 — 8-cell two-row (4×2 layout)
+     ============================================================ */
+  .kpi-grid-8 { grid-template-columns: repeat(4, 1fr); }
+
+  /* ============================================================
+     VARIANT 3 — Scorecard with delta arrows
+     The arrow + change pattern: stack value over change in a horizontal row
+     ============================================================ */
+  .kpi-scorecard { grid-template-columns: repeat(3, 1fr); }
+  .kpi-scorecard .kpi { padding: 28px 24px; }
+  .kpi-scorecard .kpi-value { font-size: 40px; }
+  .kpi-delta {
+    display: inline-flex; align-items: baseline; gap: 6px;
+    font-family: "JetBrains Mono", monospace; font-size: 13px;
+    margin-top: 12px;
+  }
+  .kpi-delta .arrow { font-size: 11px; }
+  .kpi-delta-label { color: var(--muted); font-size: 11px; margin-left: 6px;
+                     font-family: "Geist", sans-serif; letter-spacing: 0.05em; }
+
+  /* ============================================================
+     VARIANT 4 — Compact mini-grid (6 cells, smaller scale)
+     ============================================================ */
+  .kpi-mini { grid-template-columns: repeat(3, 1fr); }
+  .kpi-mini .kpi { padding: 16px 18px; }
+  .kpi-mini .kpi-label { font-size: 9px; margin-bottom: 6px; }
+  .kpi-mini .kpi-value { font-size: 22px; }
+  .kpi-mini .kpi-sub { font-size: 11px; margin-top: 4px; }
+
+  /* ============================================================
+     VARIANT 5 — KPI with embedded sparkline strip
+     A 1-line trend indicator beneath the value
+     ============================================================ */
+  .kpi-spark .spark {
+    margin-top: 14px; display: flex; align-items: flex-end;
+    gap: 2px; height: 24px;
+  }
+  .spark-bar {
+    flex: 1; background: var(--ink-soft); opacity: 0.4; min-height: 2px;
+    transition: opacity .15s;
+  }
+  .spark-bar.last { background: var(--accent); opacity: 1; }
+  .kpi-spark:hover .spark-bar { opacity: 0.7; }
+  .kpi-spark:hover .spark-bar.last { opacity: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 880px) {
+    .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .kpi-grid-8 { grid-template-columns: repeat(2, 1fr); }
+    .kpi-scorecard { grid-template-columns: 1fr; }
+    .kpi-mini { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <button class="toggle-btn" onclick="toggleTheme()">◐ Theme</button>
+  <h1 style="font-family:'Fraunces',serif;font-weight:400;font-size:36px;
+             letter-spacing:-0.02em;margin-bottom:48px;font-variation-settings:'opsz' 144;">
+    KPI Grid <em style="color:var(--accent);font-style:italic">Variants</em>
+  </h1>
+
+  <!-- ============================================================
+       VARIANT 1 — STANDARD 4-COLUMN
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">Variant 01 / Standard</div>
+    <div class="demo-title">Four-column headline metrics</div>
+    <p class="demo-desc">
+      The default. Use this at the top of any analytical page for top-line metrics.
+      Drops to 2 columns on screens under 880px.
+    </p>
+    <div class="kpi-grid kpi-grid-4">
+      <div class="kpi">
+        <div class="kpi-label">Total Trades</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-sub">2021 → 2026</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Win Rate</div>
+        <div class="kpi-value pos">58.4%</div>
+        <div class="kpi-sub">vs baseline 52.1%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Profit Factor</div>
+        <div class="kpi-value pos">1.62</div>
+        <div class="kpi-sub">Σwins ÷ |Σlosses|</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total Return</div>
+        <div class="kpi-value pos">+24.7%</div>
+        <div class="kpi-sub">net of costs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VARIANT 2 — 8-CELL TWO-ROW
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">Variant 02 / Extended</div>
+    <div class="demo-title">Eight-cell diagnostic grid</div>
+    <p class="demo-desc">
+      For when headline + secondary metrics are both essential. Layout naturally as
+      two rows of four with no special markup — the parent grid handles it.
+    </p>
+    <div class="kpi-grid kpi-grid-8">
+      <div class="kpi"><div class="kpi-label">Trades</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-sub">2021 → 2026</div></div>
+      <div class="kpi"><div class="kpi-label">Win Rate</div>
+        <div class="kpi-value pos">58.4%</div>
+        <div class="kpi-sub">vs base 52.1%</div></div>
+      <div class="kpi"><div class="kpi-label">Profit Factor</div>
+        <div class="kpi-value pos">1.62</div>
+        <div class="kpi-sub">net</div></div>
+      <div class="kpi"><div class="kpi-label">Total Return</div>
+        <div class="kpi-value pos">+24.7%</div>
+        <div class="kpi-sub">cumulative</div></div>
+      <div class="kpi"><div class="kpi-label">Expectancy</div>
+        <div class="kpi-value">+0.18%</div>
+        <div class="kpi-sub">per trade</div></div>
+      <div class="kpi"><div class="kpi-label">Avg Win/Loss</div>
+        <div class="kpi-value">1.42</div>
+        <div class="kpi-sub">+0.51% / -0.36%</div></div>
+      <div class="kpi"><div class="kpi-label">Max Drawdown</div>
+        <div class="kpi-value neg">-8.2%</div>
+        <div class="kpi-sub">peak-to-trough</div></div>
+      <div class="kpi"><div class="kpi-label">Sharpe</div>
+        <div class="kpi-value">0.42</div>
+        <div class="kpi-sub">per trade</div></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VARIANT 3 — SCORECARD WITH DELTAS
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">Variant 03 / Scorecard</div>
+    <div class="demo-title">Three-column scorecard with period deltas</div>
+    <p class="demo-desc">
+      When the change is the story (YoY, QoQ, vs benchmark). Larger value type,
+      explicit delta arrows below. The arrow uses the unicode triangle character —
+      no icon library needed.
+    </p>
+    <div class="kpi-grid kpi-scorecard">
+      <div class="kpi">
+        <div class="kpi-label">Revenue</div>
+        <div class="kpi-value">₹4.82 Cr</div>
+        <div class="kpi-delta pos">
+          <span class="arrow">▲</span><span>+12.4%</span>
+          <span class="kpi-delta-label">vs Q3</span>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Active Clients</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta pos">
+          <span class="arrow">▲</span><span>+4</span>
+          <span class="kpi-delta-label">net new</span>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avg Deal Size</div>
+        <div class="kpi-value">₹12.7 L</div>
+        <div class="kpi-delta neg">
+          <span class="arrow">▼</span><span>-3.1%</span>
+          <span class="kpi-delta-label">vs Q3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VARIANT 4 — COMPACT MINI-GRID
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">Variant 04 / Compact</div>
+    <div class="demo-title">Six-cell mini-grid for sidebars or dense dashboards</div>
+    <p class="demo-desc">
+      Smaller type scale (22px values vs 32px) for when KPIs are supporting content
+      rather than the page's headline. Good in two-col layouts or above detail tables.
+    </p>
+    <div class="kpi-grid kpi-mini">
+      <div class="kpi"><div class="kpi-label">CPU</div>
+        <div class="kpi-value">42%</div></div>
+      <div class="kpi"><div class="kpi-label">Memory</div>
+        <div class="kpi-value">61%</div></div>
+      <div class="kpi"><div class="kpi-label">Disk</div>
+        <div class="kpi-value">23%</div></div>
+      <div class="kpi"><div class="kpi-label">Latency p50</div>
+        <div class="kpi-value">38ms</div></div>
+      <div class="kpi"><div class="kpi-label">Latency p99</div>
+        <div class="kpi-value neg">412ms</div></div>
+      <div class="kpi"><div class="kpi-label">Errors</div>
+        <div class="kpi-value pos">0.02%</div></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VARIANT 5 — KPI WITH SPARKLINE
+       ============================================================ -->
+  <section class="demo-section">
+    <div class="demo-label">Variant 05 / With Sparkline</div>
+    <div class="demo-title">KPIs with embedded micro-trend strips</div>
+    <p class="demo-desc">
+      A pure-CSS sparkline (no library needed). The last bar is colored
+      <code>--accent</code> to anchor "now" in the visual. Use when trend matters
+      as much as the current value.
+    </p>
+    <div class="kpi-grid kpi-grid-4">
+      <div class="kpi kpi-spark">
+        <div class="kpi-label">Daily Active Users</div>
+        <div class="kpi-value">8,420</div>
+        <div class="spark">
+          <div class="spark-bar" style="height: 30%"></div>
+          <div class="spark-bar" style="height: 45%"></div>
+          <div class="spark-bar" style="height: 38%"></div>
+          <div class="spark-bar" style="height: 52%"></div>
+          <div class="spark-bar" style="height: 60%"></div>
+          <div class="spark-bar" style="height: 55%"></div>
+          <div class="spark-bar" style="height: 70%"></div>
+          <div class="spark-bar" style="height: 68%"></div>
+          <div class="spark-bar" style="height: 80%"></div>
+          <div class="spark-bar last" style="height: 95%"></div>
+        </div>
+      </div>
+      <div class="kpi kpi-spark">
+        <div class="kpi-label">Conversion</div>
+        <div class="kpi-value">3.42%</div>
+        <div class="spark">
+          <div class="spark-bar" style="height: 70%"></div>
+          <div class="spark-bar" style="height: 65%"></div>
+          <div class="spark-bar" style="height: 80%"></div>
+          <div class="spark-bar" style="height: 60%"></div>
+          <div class="spark-bar" style="height: 55%"></div>
+          <div class="spark-bar" style="height: 75%"></div>
+          <div class="spark-bar" style="height: 50%"></div>
+          <div class="spark-bar" style="height: 45%"></div>
+          <div class="spark-bar" style="height: 40%"></div>
+          <div class="spark-bar last" style="height: 35%"></div>
+        </div>
+      </div>
+      <div class="kpi kpi-spark">
+        <div class="kpi-label">NPS</div>
+        <div class="kpi-value pos">+62</div>
+        <div class="spark">
+          <div class="spark-bar" style="height: 40%"></div>
+          <div class="spark-bar" style="height: 50%"></div>
+          <div class="spark-bar" style="height: 55%"></div>
+          <div class="spark-bar" style="height: 65%"></div>
+          <div class="spark-bar" style="height: 72%"></div>
+          <div class="spark-bar" style="height: 80%"></div>
+          <div class="spark-bar" style="height: 85%"></div>
+          <div class="spark-bar" style="height: 88%"></div>
+          <div class="spark-bar" style="height: 90%"></div>
+          <div class="spark-bar last" style="height: 92%"></div>
+        </div>
+      </div>
+      <div class="kpi kpi-spark">
+        <div class="kpi-label">Revenue</div>
+        <div class="kpi-value">₹4.8 Cr</div>
+        <div class="spark">
+          <div class="spark-bar" style="height: 30%"></div>
+          <div class="spark-bar" style="height: 35%"></div>
+          <div class="spark-bar" style="height: 45%"></div>
+          <div class="spark-bar" style="height: 50%"></div>
+          <div class="spark-bar" style="height: 60%"></div>
+          <div class="spark-bar" style="height: 65%"></div>
+          <div class="spark-bar" style="height: 75%"></div>
+          <div class="spark-bar" style="height: 80%"></div>
+          <div class="spark-bar" style="height: 88%"></div>
+          <div class="spark-bar last" style="height: 100%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    const c = document.documentElement.getAttribute('data-theme');
+    document.documentElement.setAttribute('data-theme', c === 'dark' ? 'light' : 'dark');
+  }
+</script>
+</body>
+</html>
