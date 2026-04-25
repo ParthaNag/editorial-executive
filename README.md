@@ -15,7 +15,20 @@ editorial-executive/
 
 ---
 
-## Installation — pick one of three methods
+## Installation
+
+### Quick Start (Choose Your Method Below)
+
+Before installing, understand where Claude Code looks for skills:
+
+**Global location** (available in all Claude Code sessions):
+- **Mac/Linux:** `~/.claude/skills/`
+- **Windows:** `%USERPROFILE%\.claude\skills\` (typically `C:\Users\YourUsername\.claude\skills\`)
+
+**Project location** (only for current project):
+- `.claude/skills/` in your project root
+
+---
 
 ### Method 1 · One-line installer script (recommended)
 
@@ -79,22 +92,121 @@ Now anyone can install your skill directly from GitHub using **Method 3** above.
 
 ---
 
-## Verifying installation
+## Installing Skills in Claude Code (UI Guide)
 
-Open a **new** Claude Code session (the skill registry is read at session start), then:
+### For Desktop App / Web App Users
 
+1. **Open your operating system's file manager**
+   - **Mac:** Press `Cmd + Space`, type "Finder"
+   - **Windows:** Press `Win + E` to open File Explorer
+   - **Linux:** Open your file manager
+
+2. **Navigate to the skills directory**
+   - **Mac/Linux:** Press `Cmd + Shift + G` (or equivalent), paste `~/.claude/skills/` (create folder if it doesn't exist)
+   - **Windows:** Paste this in the address bar: `%USERPROFILE%\.claude\skills\` (create folder if it doesn't exist)
+
+3. **Copy the skill folder here**
+   - Extract the `editorial-executive` folder (from zip or git clone) into `~/.claude/skills/`
+   - Final path should be: `~/.claude/skills/editorial-executive/SKILL.md`
+
+4. **Restart Claude Code**
+   - Close and reopen Claude Code completely (skills load on startup)
+
+5. **Verify installation**
+   - Open Claude Code and type `/skills` in any chat
+   - You should see `editorial-executive` listed
+
+---
+
+### For CLI Users
+
+Install via terminal using one of the methods below (pick the one that fits your workflow):
+
+<details>
+<summary><strong>Method A: Download & Extract (Easiest)</strong></summary>
+
+Download the `editorial-executive.zip` from GitHub releases, then:
+
+```bash
+mkdir -p ~/.claude/skills
+unzip ~/Downloads/editorial-executive.zip -d ~/.claude/skills/
 ```
-/skills
+
+Verify:
+```bash
+ls -la ~/.claude/skills/editorial-executive/SKILL.md
 ```
 
-You should see `editorial-executive` in the list. If it doesn't appear, the most common causes are:
+</details>
 
-| Problem | Fix |
+<details>
+<summary><strong>Method B: Git Clone (Best for Updates)</strong></summary>
+
+Clone directly from GitHub:
+
+```bash
+mkdir -p ~/.claude/skills
+git clone https://github.com/ParthaNag/editorial-executive.git ~/.claude/skills/editorial-executive
+```
+
+Later, to update: `cd ~/.claude/skills/editorial-executive && git pull`
+
+</details>
+
+<details>
+<summary><strong>Method C: Install Script</strong></summary>
+
+Run the installer (self-contained, no dependencies):
+
+```bash
+bash install.sh
+```
+
+To install in a specific project:
+```bash
+bash install.sh /path/to/your/project/.claude/skills
+```
+
+</details>
+
+---
+
+## Verifying Installation
+
+### Step 1: Check the filesystem
+
+Verify the skill folder exists in the right place:
+
+**Mac/Linux:**
+```bash
+ls -la ~/.claude/skills/editorial-executive/
+# Should show: SKILL.md, starter.html, examples/
+```
+
+**Windows (PowerShell):**
+```powershell
+Get-ChildItem $env:USERPROFILE\.claude\skills\editorial-executive\
+# Should show: SKILL.md, starter.html, examples/
+```
+
+### Step 2: Verify in Claude Code
+
+1. **Close and reopen Claude Code completely** (skills load at startup)
+2. Open any chat and type: `/skills`
+3. You should see `editorial-executive` in the list
+
+---
+
+### Troubleshooting
+
+| Problem | Solution |
 |---|---|
-| Filename casing wrong | Must be exactly `SKILL.md`, not `skill.md` or `Skill.md` |
-| Missing YAML frontmatter | The `---` block at the top of `SKILL.md` is required |
-| Wrong path | Check `~/.claude/skills/editorial-executive/SKILL.md` exists |
-| Old session | Open a new Claude Code session — skills load on start |
+| **Skill doesn't appear in `/skills` list** | Close Claude Code completely and reopen it. Skills load at session start, not dynamically. |
+| **"File not found" error** | Verify path: `~/.claude/skills/editorial-executive/SKILL.md` exists (check exact spelling and casing) |
+| **`SKILL.md` has wrong casing** | Rename to `SKILL.md` exactly. File names are case-sensitive on Mac/Linux. |
+| **Frontmatter error** | Ensure `SKILL.md` starts with `---` on line 1 and has `name:` and `description:` fields. |
+| **Wrong installation folder** | Delete and reinstall to: `~/.claude/skills/editorial-executive/` (NOT a project subfolder unless intended) |
+| **Permissions denied (Mac/Linux)** | Run: `chmod -R 755 ~/.claude/skills/editorial-executive/` |
 
 ---
 
