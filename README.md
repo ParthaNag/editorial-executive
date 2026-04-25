@@ -96,25 +96,52 @@ Now anyone can install your skill directly from GitHub using **Method 3** above.
 
 ### For Desktop App / Web App Users
 
-1. **Open your operating system's file manager**
-   - **Mac:** Press `Cmd + Space`, type "Finder"
-   - **Windows:** Press `Win + E` to open File Explorer
-   - **Linux:** Open your file manager
+#### Mac/Linux
 
-2. **Navigate to the skills directory**
-   - **Mac/Linux:** Press `Cmd + Shift + G` (or equivalent), paste `~/.claude/skills/` (create folder if it doesn't exist)
-   - **Windows:** Paste this in the address bar: `%USERPROFILE%\.claude\skills\` (create folder if it doesn't exist)
+1. **Open Finder** (Mac: `Cmd + Space`, type "Finder") or your file manager (Linux)
+2. Press `Cmd + Shift + G` and paste: `~/.claude/skills/` (create folder if needed)
+3. Extract `editorial-executive` folder into this directory
+4. Final path: `~/.claude/skills/editorial-executive/SKILL.md`
+5. **Restart Claude Code** completely (skills load on startup)
+6. Type `/skills` to verify it appears in the list
 
-3. **Copy the skill folder here**
-   - Extract the `editorial-executive` folder (from zip or git clone) into `~/.claude/skills/`
-   - Final path should be: `~/.claude/skills/editorial-executive/SKILL.md`
+---
 
-4. **Restart Claude Code**
-   - Close and reopen Claude Code completely (skills load on startup)
+#### Windows 11 (Detailed Steps)
 
-5. **Verify installation**
-   - Open Claude Code and type `/skills` in any chat
-   - You should see `editorial-executive` listed
+**Step 1: Open File Explorer and navigate to the skills folder**
+- Press `Win + E` to open File Explorer
+- In the address bar at the top, paste: `%USERPROFILE%\.claude\skills`
+- Press Enter
+
+**Step 2: Create the folder if it doesn't exist**
+- If you see "This folder doesn't exist", Windows will prompt you to create it
+- Click **Yes** to create the `.claude\skills` folder structure
+
+**Step 3: View hidden files (if needed)**
+- If `.claude` folder is not visible, you need to enable hidden files
+- In File Explorer, click **View** tab → Check **Hidden items**
+- Now you should see the `.claude` folder
+
+**Step 4: Extract the skill folder**
+- Download `editorial-executive.zip` or clone from GitHub
+- Extract/move the `editorial-executive` folder into `C:\Users\[YourUsername]\.claude\skills\`
+- Final path should be: `C:\Users\[YourUsername]\.claude\skills\editorial-executive\SKILL.md`
+
+**Step 5: Restart Claude Code**
+- Close Claude Code completely
+- Reopen it (skills are loaded at startup)
+
+**Step 6: Verify installation**
+- Open any chat in Claude Code
+- Type `/skills` and press Enter
+- You should see `editorial-executive` in the skills list
+
+**Alternative: Direct path for your system**
+```
+C:\Users\partha\.claude\skills\editorial-executive\
+```
+(Replace `partha` with your Windows username)
 
 ---
 
@@ -177,16 +204,33 @@ bash install.sh /path/to/your/project/.claude/skills
 
 Verify the skill folder exists in the right place:
 
-**Mac/Linux:**
+#### Mac/Linux
 ```bash
 ls -la ~/.claude/skills/editorial-executive/
 # Should show: SKILL.md, starter.html, examples/
 ```
 
-**Windows (PowerShell):**
+#### Windows 11
+
+**Using File Explorer:**
+1. Press `Win + E`
+2. Paste in address bar: `%USERPROFILE%\.claude\skills\editorial-executive`
+3. You should see: `SKILL.md`, `starter.html`, `examples` folder
+
+**Using PowerShell:**
 ```powershell
+# Check if skill folder exists
+Test-Path $env:USERPROFILE\.claude\skills\editorial-executive\SKILL.md
+
+# List all files in the skill folder
 Get-ChildItem $env:USERPROFILE\.claude\skills\editorial-executive\
+
 # Should show: SKILL.md, starter.html, examples/
+```
+
+**Using Command Prompt (cmd.exe):**
+```cmd
+dir %USERPROFILE%\.claude\skills\editorial-executive\
 ```
 
 ### Step 2: Verify in Claude Code
@@ -201,12 +245,15 @@ Get-ChildItem $env:USERPROFILE\.claude\skills\editorial-executive\
 
 | Problem | Solution |
 |---|---|
-| **Skill doesn't appear in `/skills` list** | Close Claude Code completely and reopen it. Skills load at session start, not dynamically. |
-| **"File not found" error** | Verify path: `~/.claude/skills/editorial-executive/SKILL.md` exists (check exact spelling and casing) |
-| **`SKILL.md` has wrong casing** | Rename to `SKILL.md` exactly. File names are case-sensitive on Mac/Linux. |
+| **Skill doesn't appear in `/skills` list** | Close Claude Code **completely** and reopen it. Skills load at session start, not dynamically. |
+| **"File not found" error** | Verify path exists: `C:\Users\[YourUsername]\.claude\skills\editorial-executive\SKILL.md` |
+| **`.claude` folder not visible (Windows)** | Enable hidden files: File Explorer → **View** tab → Check **Hidden items** |
+| **`SKILL.md` has wrong casing** | Rename to `SKILL.md` exactly. (Case-sensitive on Mac/Linux) |
 | **Frontmatter error** | Ensure `SKILL.md` starts with `---` on line 1 and has `name:` and `description:` fields. |
-| **Wrong installation folder** | Delete and reinstall to: `~/.claude/skills/editorial-executive/` (NOT a project subfolder unless intended) |
+| **Wrong installation folder** | Must be: `C:\Users\[YourUsername]\.claude\skills\editorial-executive\` (NOT a project subfolder) |
 | **Permissions denied (Mac/Linux)** | Run: `chmod -R 755 ~/.claude/skills/editorial-executive/` |
+| **Windows: Antivirus blocked folder** | Check Windows Defender or antivirus settings. Add `.claude` folder to exclusions. |
+| **Path too long error (Windows)** | Use shorter path or enable long path support in Windows (rare edge case) |
 
 ---
 
